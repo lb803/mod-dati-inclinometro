@@ -15,8 +15,8 @@ def ordina_data(data):
 
 def main():
     with open(file_name, 'w+') as csv_w_file:
-        writer = csv.writer(csv_w_file, delimiter=';')
-        
+        writer = csv.writer(csv_w_file, delimiter=';', quoting=csv.QUOTE_ALL)
+
         with open(file_path, 'r') as csv_r_file:
             reader = csv.reader(csv_r_file, delimiter=';')
 
@@ -28,8 +28,6 @@ def main():
 
                 # write entire row to output file
                 writer.writerow(row)
-
-
 
 
 if __name__ == "__main__":
