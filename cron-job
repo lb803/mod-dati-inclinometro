@@ -1,4 +1,0 @@
-INPUT=/mod-dati/input/
-OUTPUT=/mod-dati/output/
-
-* 7-19 * * 1-5 bash /mod-dati/mod-dati.sh

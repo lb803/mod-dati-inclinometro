@@ -19,11 +19,3 @@ Il modo piu’ semplice e’ quello di definire un job in crontab, ad esempio:
 ```
 * 7-19 * * 1-5 bash /mod-dati/mod-dati.sh
 ```
-### docker
-Alternativa e’ usare un container docker con un comando come questo:
-```
-docker run -dit --entrypoint /bin/sh \
-           -v cartella-di-input/:/mod-dati/input/ \
-           -v cartella-di-output/:/mod-dati/output/ \
-           lb803/mod-dati-inclinometro
-```
