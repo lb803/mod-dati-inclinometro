@@ -6,7 +6,7 @@
 I file di input sono documenti *.csv contenenti un elenco di misurazioni. Ogni misurazione e’ prefissata da un campo data in formato `gg-mm-aaaa [...]`.  `mod-dati-inclinometro` modifica il formato a `gg/mm/aaaa [...]` e riporta il risultato in output. I nomi dei file rimangono invariati.
 
 ## Specifiche Tecniche
-I file di input vengono campionati a intervalli regolari (pooling) e `mod-dati-inclinometro` esegue la conversione. Il criterio di selezione e’ la data di scrittura: i file devono essere stati scritti almeno 5 minuti prima (per limitare problemi di sincronia (i/o) del primo strumento). 
+I file di input vengono campionati a intervalli regolari (pooling) e `mod-dati-inclinometro` esegue la conversione. Il criterio di selezione e’ la data di scrittura: i file devono essere stati modificati/scritti nelle due ore precedenti (per limitare problemi di sincronia (i/o) del primo strumento).
 
 Il processo viene fatto partire con cron.
 
