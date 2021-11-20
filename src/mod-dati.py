@@ -79,12 +79,14 @@ def main():
     source = Source(in_folder)
     file_list = source.get_list()
 
+    out_file_exists = path.exists(out_file)
+
     writer = Writer(out_file)
 
     for index, in_file in enumerate(file_list):
         reader = Reader(in_file)
 
-        if index or path.isfile(out_file):
+        if index or out_file_exists:
             reader.skip_header_rows()
 
         for row in reader:
