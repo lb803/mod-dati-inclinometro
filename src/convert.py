@@ -18,9 +18,12 @@ def main():
         reader = csv.reader(csv_r_file, delimiter=';')
 
         for row in reader:
-            # if not empty and first column matches input date pattern
-            if len(row) and \
-               re.match(r'\d+-\d+-\d+ \d+:\d+:\d+', row[0]):
+            # skip empty lines
+            if len(row) == 0:
+                continue
+
+            # if first column matches input date pattern
+            if re.match(r'\d+-\d+-\d+ \d+:\d+:\d+', row[0]):
                 row[0] = fix_date(row[0])
 
             print(row)
