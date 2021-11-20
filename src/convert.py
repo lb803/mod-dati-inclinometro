@@ -41,28 +41,28 @@ def fix_date(date):
 def main():
     source = Source(in_folder)
     file_list = source.get_list()
-    print(file_list)
 
-#    with open(in_file, 'r') as csv_r_file, \
-#         open(out_file, 'a+') as cvs_w_file:
-#        reader = csv.reader(csv_r_file, delimiter=';')
-#        writer = csv.writer(cvs_w_file)
+    for in_file in file_list:
+        with open(in_file, 'r') as csv_r_file, \
+             open(out_file, 'a+') as cvs_w_file:
+            reader = csv.reader(csv_r_file, delimiter=';')
+            writer = csv.writer(cvs_w_file)
 
-        # skip header rows if out_file exists
-#        if path.exists(out_file):
-#            for header_row in range(HEADER_LENGHT):
-#                next(reader)
+            # skip header rows if out_file exists
+            if path.exists(out_file):
+                for header_row in range(HEADER_LENGHT):
+                    next(reader)
 
-#        for row in reader:
-            # skip empty lines
-#            if len(row) == 0:
-#                continue
+            for row in reader:
+                # skip empty lines
+                if len(row) == 0:
+                    continue
 
-            # if first column matches input date pattern
-#            if re.match(r'\d+-\d+-\d+ \d+:\d+:\d+', row[0]):
-#                row[0] = fix_date(row[0])
+                # if first column matches input date pattern
+                if re.match(r'\d+-\d+-\d+ \d+:\d+:\d+', row[0]):
+                    row[0] = fix_date(row[0])
 
-#            writer.writerow(row)
+                writer.writerow(row)
 
 
 if __name__ == "__main__":
