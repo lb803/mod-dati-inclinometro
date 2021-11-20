@@ -45,10 +45,30 @@ class Writer:
         self.csv_w_file.close()
 
 
-def fix_date(date):
-    date_obj = datetime.strptime(date, '%d-%m-%Y %H:%M:%S')
+class Reader:
+    def __init__(self, in_file):
+        self.csv_r_file = open(in_file, 'r')
+        self.reader = csv.reader(self.csv_r_file, delimiter=';')
 
-    return date_obj.strftime('%Y-%m-%d %H:%M:%S')
+    def __iter__(self):
+        for row in self.reader:
+            # skip empty lines
+            if len(row) == 0:
+                continue
+
+            # if first column matches input date pattern
+            if re.match(r'\d+-\d+-\d+ \d+:\d+:\d+', row[0]):
+                row[0] = self.fix_date(row[0])
+
+            yield row
+
+    def fix_date(self, date):
+        date_obj = datetime.strptime(date, '%d-%m-%Y %H:%M:%S')
+
+        return date_obj.strftime('%Y-%m-%d %H:%M:%S')
+
+    def __exit__(self):
+        self.csv_r_file.close()
 
 def main():
     source = Source(in_folder)
@@ -57,24 +77,15 @@ def main():
     writer = Writer(out_file)
 
     for in_file in file_list:
-        with open(in_file, 'r') as csv_r_file:
-            reader = csv.reader(csv_r_file, delimiter=';')
+        reader = Reader(in_file)
 
             # skip header rows if out_file exists
-            if path.exists(out_file):
-                for header_row in range(HEADER_LENGHT):
-                    next(reader)
+#            if path.exists(out_file):
+#                for header_row in range(HEADER_LENGHT):
+#                    next(reader)
 
-            for row in reader:
-                # skip empty lines
-                if len(row) == 0:
-                    continue
-
-                # if first column matches input date pattern
-                if re.match(r'\d+-\d+-\d+ \d+:\d+:\d+', row[0]):
-                    row[0] = fix_date(row[0])
-
-                writer.write_row(row)
+        for row in reader:
+            writer.write_row(row)
 
 
 if __name__ == "__main__":
