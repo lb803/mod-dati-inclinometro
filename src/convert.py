@@ -16,11 +16,13 @@ def fix_date(date):
     return date_obj.strftime('%Y-%m-%d %H:%M:%S')
 
 def main():
-    with open(in_file, 'r') as csv_r_file:
+    with open(in_file, 'r') as csv_r_file, \
+         open(out_file, 'a+') as cvs_w_file:
         reader = csv.reader(csv_r_file, delimiter=';')
+        writer = csv.writer(cvs_w_file)
 
         # skip header rows if out_file exists
-        if path.isfile(out_file):
+        if path.exists(out_file):
             for header_row in range(HEADER_LENGHT):
                 next(reader)
 
@@ -33,7 +35,7 @@ def main():
             if re.match(r'\d+-\d+-\d+ \d+:\d+:\d+', row[0]):
                 row[0] = fix_date(row[0])
 
-            print(row)
+            writer.writerow(row)
 
 
 if __name__ == "__main__":
