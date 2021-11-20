@@ -67,8 +67,13 @@ class Reader:
 
         return date_obj.strftime('%Y-%m-%d %H:%M:%S')
 
+    def skip_header_rows(self):
+        for header_row in range(HEADER_LENGHT):
+            next(self.reader)
+
     def __exit__(self):
         self.csv_r_file.close()
+
 
 def main():
     source = Source(in_folder)
@@ -76,13 +81,11 @@ def main():
 
     writer = Writer(out_file)
 
-    for in_file in file_list:
+    for index, in_file in enumerate(file_list):
         reader = Reader(in_file)
 
-            # skip header rows if out_file exists
-#            if path.exists(out_file):
-#                for header_row in range(HEADER_LENGHT):
-#                    next(reader)
+        if index or path.isfile(out_file):
+            reader.skip_header_rows()
 
         for row in reader:
             writer.write_row(row)
