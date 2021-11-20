@@ -33,6 +33,18 @@ class Source:
         return file_list
 
 
+class Writer:
+    def __init__(self, out_file):
+        self.cvs_w_file = open(out_file, 'a+')
+        self.writer = csv.writer(self.cvs_w_file)
+
+    def write_row(self, row):
+        self.writer.writerow(row)
+
+    def __exit__(self):
+        self.csv_w_file.close()
+
+
 def fix_date(date):
     date_obj = datetime.strptime(date, '%d-%m-%Y %H:%M:%S')
 
@@ -42,11 +54,11 @@ def main():
     source = Source(in_folder)
     file_list = source.get_list()
 
+    writer = Writer(out_file)
+
     for in_file in file_list:
-        with open(in_file, 'r') as csv_r_file, \
-             open(out_file, 'a+') as cvs_w_file:
+        with open(in_file, 'r') as csv_r_file:
             reader = csv.reader(csv_r_file, delimiter=';')
-            writer = csv.writer(cvs_w_file)
 
             # skip header rows if out_file exists
             if path.exists(out_file):
@@ -62,7 +74,7 @@ def main():
                 if re.match(r'\d+-\d+-\d+ \d+:\d+:\d+', row[0]):
                     row[0] = fix_date(row[0])
 
-                writer.writerow(row)
+                writer.write_row(row)
 
 
 if __name__ == "__main__":
