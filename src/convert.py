@@ -8,8 +8,8 @@ import re
 in_folder = path.abspath(sys.argv[1])
 out_file = path.abspath(sys.argv[2])
 
-TIME_FRAME=60
-HEADER_LENGHT=3
+TIME_FRAME = 60
+HEADER_LENGHT = 3
 
 
 class Source:
