@@ -21,8 +21,5 @@ while getopts 'i:o:' flag; do
     esac
 done
 
-echo $in_folder
-echo $out_file
-
-#find $in_folder -maxdepth 1 -type f -name "*.csv" -mmin -120 -exec \
-#     sh -c 'sed "s,\([0-9]\{2\}\)-\([0-9]\{2\}\)-\([0-9]\{4\}\),\1/\2/\3," "$1" > $OUTPUT/$(basename "$1")' sh {} \;
+find $in_folder -maxdepth 1 -type f -name "*.csv" -mmin -120 \
+     -exec python3 "$(dirname $0)/convert.py" {} $out_file \;
