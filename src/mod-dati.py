@@ -13,6 +13,13 @@ HEADER_LENGHT = 3
 
 
 class Source:
+    """
+    Class to discover and produce a list of files to be processed.
+
+    Given an input folder `in_folder`, the class checks which files have
+    been modified in the last `TIME_FRAME` minutes and returns a list with
+    the get_list() method.
+    """
     def __init__(self, in_folder):
         self.in_folder = in_folder
         self.now = datetime.now()
@@ -34,6 +41,11 @@ class Source:
 
 
 class Writer:
+    """
+    Writer class.
+
+    Csv rows returned by a Reader object are written to a new csv file.
+    """
     def __init__(self, out_file):
         self.cvs_w_file = open(out_file, 'a+')
         self.writer = csv.writer(self.cvs_w_file)
@@ -46,6 +58,18 @@ class Writer:
 
 
 class Reader:
+    """
+    Reader class
+
+    Given an input file `in_file`, the class allows to iter through the rows
+    of interest to the software (see magic method __iter__() for details)
+    which can be safely written with a Writer object.
+
+    Supplementary methods are:
+     - fix_date() which fixes the date format of the input `row`;
+     - skip_header_rows() as we don't want to repeat the header when appending
+    entries from multiple files (or if `out_file` exists for whatever reason).
+    """
     def __init__(self, in_file):
         self.csv_r_file = open(in_file, 'r')
         self.reader = csv.reader(self.csv_r_file, delimiter=';')
