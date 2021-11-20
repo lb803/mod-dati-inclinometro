@@ -2,9 +2,29 @@
 from datetime import datetime
 import sys
 from os import path
+import csv
+import re
 
-file_list = path.abspath(sys.argv[1])
+in_file = path.abspath(sys.argv[1])
 out_file = path.abspath(sys.argv[2])
 
-print(file_list)
-print(out_file_exists)
+def fix_date(date):
+    date_obj = datetime.strptime(date, '%d-%m-%Y %H:%M:%S')
+
+    return date_obj.strftime('%Y-%m-%d %H:%M:%S')
+
+def main():
+    with open(in_file, 'r') as csv_r_file:
+        reader = csv.reader(csv_r_file, delimiter=';')
+
+        for row in reader:
+            # if not empty and first column matches input date pattern
+            if len(row) and \
+               re.match(r'\d+-\d+-\d+ \d+:\d+:\d+', row[0]):
+                row[0] = fix_date(row[0])
+
+            print(row)
+
+
+if __name__ == "__main__":
+    main()
