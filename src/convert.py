@@ -8,6 +8,8 @@ import re
 in_file = path.abspath(sys.argv[1])
 out_file = path.abspath(sys.argv[2])
 
+HEADER_LENGHT=3
+
 def fix_date(date):
     date_obj = datetime.strptime(date, '%d-%m-%Y %H:%M:%S')
 
@@ -16,6 +18,11 @@ def fix_date(date):
 def main():
     with open(in_file, 'r') as csv_r_file:
         reader = csv.reader(csv_r_file, delimiter=';')
+
+        # skip header rows if out_file exists
+        if path.isfile(out_file):
+            for header_row in range(HEADER_LENGHT):
+                next(reader)
 
         for row in reader:
             # skip empty lines
