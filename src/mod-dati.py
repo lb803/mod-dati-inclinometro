@@ -47,7 +47,7 @@ class Writer:
     Csv rows returned by a Reader object are written to a new csv file.
     """
     def __init__(self, out_file):
-        self.cvs_w_file = open(out_file, 'a+')
+        self.cvs_w_file = open(out_file, 'a+', newline='')
         self.writer = csv.writer(self.cvs_w_file)
 
     def write_row(self, row):
