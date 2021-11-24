@@ -3,19 +3,29 @@
 `mod-dati-inclinometro` e’ un layer di compatibilita’ tra due strumenti, in cui l’output del primo deve essere modificato per diventare un input valido per il secondo.
 
 ## Descrizione
-I file di input sono documenti *.csv contenenti un elenco di misurazioni. Ogni misurazione e’ prefissata da un campo data in formato `gg-mm-aaaa [...]`.  `mod-dati-inclinometro` modifica il formato a `gg/mm/aaaa [...]` e riporta il risultato in output. I nomi dei file rimangono invariati.
+I file di input sono documenti *.csv contenenti un elenco di misurazioni. Ogni misurazione e’ prefissata da un campo data in formato `gg-mm-aaaa [...]`.  `mod-dati-inclinometro` modifica il formato a `aaaa-mm-gg [...]` e riporta il risultato in output. L'output viene rediretto ad un file prestabilito.
 
 ## Specifiche Tecniche
-I file di input vengono campionati a intervalli regolari (pooling) e `mod-dati-inclinometro` esegue la conversione. Il criterio di selezione e’ la data di scrittura: i file devono essere stati modificati/scritti nelle due ore precedenti (per limitare problemi di sincronia (i/o) del primo strumento).
+I file di input vengono campionati a intervalli regolari (pooling) e `mod-dati-inclinometro` esegue la conversione. Il criterio di selezione e’ la data di scrittura: i file devono essere stati modificati/scritti nel'ora precedente.
 
-Il processo viene fatto partire con cron.
+`mod-dati-inclinometro` e’ un programma python. Questo seleziona i file nella cartella di input, esegue la conversione e riporta i risultati (append) nel file di output.
 
-`mod-dati-inclinometro` e’ uno script bash. Questo seleziona i file nella cartella di input (specificata come variabile di ambiente `$INPUT`), esegue la conversione e riporta i risultati nella cartella di output (`$OUTPUT`).
+```
+python3 mod-dati.py ./cartella/di/input/ ./file/di/output.csv
+```
+
+Il processo viene fatto partire con Windows Scheduler via bat file. Il file bat puo' essere scritto come (un esemptio e' riportato nel repository):
+
+```
+@echo off
+"C:\percorso\fino\a\python.exe" C:\percorso\fino\a\mod-dati.py C:\percorso\fino\alla\cartella\input\ C:\percorso\fino\a\file\di\output.csv
+exit
+```
+
 
 ## Installazione
-### crontab
-Il modo piu’ semplice e’ quello di definire un job in crontab, ad esempio:
 
-```
-* 7-19 * * 1-5 bash /mod-dati/mod-dati.sh
-```
+1. Installare python sul computer windows di destinazione: https://www.python.org/downloads/ .
+2. Copire il repository `mod-dati-inclinometro`.
+3. Personalizzare il file bat di esempio con cartelle e file desiderati.
+4. Creare un "Basic Task" nel Windows Scheduler di windows.
