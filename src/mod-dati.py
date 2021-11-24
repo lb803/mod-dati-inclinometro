@@ -103,6 +103,10 @@ def main():
     source = Source(in_folder)
     file_list = source.get_list()
 
+    # quit if no input file(s) to process
+    if not file_list:
+        sys.exit()
+
     out_file_exists = path.exists(out_file)
 
     writer = Writer(out_file)
